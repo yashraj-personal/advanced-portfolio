@@ -43,12 +43,97 @@ export default function Desktop({ setStage, isLocked = false }) {
     return JSON.parse(localStorage.getItem("os_desktop_files") || "[]");
   });
 
-  useEffect(() => {
-    const folders = migrateWorkFolder(JSON.parse(localStorage.getItem("os_desktop_folders") || "[]"));
-    if (JSON.stringify(folders) !== localStorage.getItem("os_desktop_folders")) {
-      localStorage.setItem("os_desktop_folders", JSON.stringify(folders));
-      setDesktopFolders(folders);
+ useEffect(() => {
+  const savedFolders = JSON.parse(
+    localStorage.getItem("os_desktop_folders") || "[]"
+  );
+
+  // Rename old [FOLDER] to WORK
+  let folders = savedFolders.map((folder) => {
+    if (folder.name === "[FOLDER]") {
+      return {
+        ...folder,
+        name: "WORK",
+      };
     }
+
+    return folder;
+  });
+
+  // Find WORK folder
+  let workFolder = folders.find(
+    (folder) => folder.name === "WORK"
+  );
+
+  // If WORK does not exist, create it
+  if (!workFolder) {
+    workFolder = {
+      id: "work_folder",
+      name: "WORK",
+      type: "folder",
+      date: new Date().toISOString(),
+      x: 100,
+      y: 100,
+    };
+
+    folders = [...folders, workFolder];
+  }
+
+  // Save WORK folder
+  localStorage.setItem(
+    "os_desktop_folders",
+    JSON.stringify(folders)
+  );
+
+  setDesktopFolders(folders);
+
+  // Load all PDFs from public/WORK/index.json
+  loadWorkProjects()
+    .then((projects) => {
+      setDesktopFiles((currentFiles) => {
+        // Remove old WORK PDF entries
+        const normalFiles = currentFiles.filter(
+          (file) => file.source !== "work-project"
+        );
+
+        // Add every PDF from index.json
+        const workFiles = projects.map((project) => ({
+          id: `work-project:${project.file}`,
+          name: project.file,
+          type: "pdf",
+          size: 0,
+          date: new Date().toISOString(),
+          parentFolderId: workFolder.id,
+          source: "work-project",
+          url: asset(
+            `/WORK/${encodeURIComponent(project.file)}`
+          ),
+        }));
+
+        const nextFiles = [
+          ...normalFiles,
+          ...workFiles,
+        ];
+
+        localStorage.setItem(
+          "os_desktop_files",
+          JSON.stringify(nextFiles)
+        );
+
+        window.dispatchEvent(
+          new CustomEvent("os_desktop_sync")
+        );
+
+        return nextFiles;
+      });
+    })
+    .catch((error) => {
+      console.error(
+        "WORK PDFs could not be loaded:",
+        error
+      );
+    });
+}, []);
 
     loadWorkProjects()
       .then((projects) => {
