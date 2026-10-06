@@ -252,11 +252,13 @@ export default function Dock() {
     },
     { divider: true },
     {
-      id: "Folder",
-      label: "Folder",
-      icon: "https://s3-new.macosicons.com/macosicons/parse/MacOS_Default_Folder_icon_GecwaBmkFQ_lowResPng-6d37abc4ac.png",
-      action: () => {},
-    },
+  id: "WORK",
+  label: "WORK",
+  icon: "https://s3-new.macosicons.com/macosicons/parse/MacOS_Default_Folder_icon_GecwaBmkFQ_lowResPng-6d37abc4ac.png",
+  action: () => {
+    openApp("Finder", <Finder initialPath="/desktop" />);
+  },
+},
     {
       id: "Trash",
       label: "Trash",
