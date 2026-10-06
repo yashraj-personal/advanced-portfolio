@@ -1,5 +1,5 @@
 import { asset } from "../lib/asset";
-import { loadWorkProjects, mergeWorkProjects, migrateWorkFolder } from "../lib/workProjects";
+import { loadWorkProjects } from "../lib/workProjects";
 import React, { useEffect, useState } from "react";
 import Dock from "../components/Dock";
 import AppWindow from "../components/AppWindow";
