@@ -1,5 +1,8 @@
 import { asset } from "../lib/asset";
-import { loadWorkProjects } from "../lib/workProjects";
+import {
+  loadWorkProjects,
+  migrateWorkFolder,
+} from "../lib/workProjects";
 import React, { useEffect, useState } from "react";
 import Dock from "../components/Dock";
 import AppWindow from "../components/AppWindow";
@@ -135,19 +138,6 @@ export default function Desktop({ setStage, isLocked = false }) {
     });
 }, []);
 
-    loadWorkProjects()
-      .then((projects) => {
-        setDesktopFiles((files) => {
-          const nextFiles = mergeWorkProjects(files, folders, projects);
-          if (JSON.stringify(nextFiles) !== JSON.stringify(files)) {
-            localStorage.setItem("os_desktop_files", JSON.stringify(nextFiles));
-            window.dispatchEvent(new CustomEvent("os_desktop_sync"));
-          }
-          return nextFiles;
-        });
-      })
-      .catch((error) => console.error(error));
-  }, []);
   const [showIcons, setShowIcons] = useState(() => {
     return localStorage.getItem("desktop_show_icons") !== "false";
   });
