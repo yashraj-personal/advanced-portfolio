@@ -161,17 +161,17 @@ const defaultNotes = [
     updatedAt: "2026-10-06T10:00:00Z"
   },
   {
-    id: 10,
-    title: "Hello, Welcome to Mac",
-    subtitle: "1 photo",
-    content: "Welcome to your new macOS simulator! Experience the premium design, fluid animations, and custom integrated applications.",
-    date: "6/9/26",
-    pinned: true,
-    folder: "notes",
-    thumbnail: asset("/images/macos27.png"),
-    images: [asset("/images/macos27.png")],
-    updatedAt: "2026-06-09T10:00:00Z"
-  }
+  id: 10,
+  title: "About Me",
+  subtitle: "A little about me",
+  content: "Hey! I'm Yash Raj 👋 I'm a 17 year old student passionate about AI, coding, cybersecurity and web development. I love building creative projects, experimenting with new technologies and turning ideas into real working websites and applications. 🚀💻🤖",
+  date: "6/9/26",
+  pinned: true,
+  folder: "notes",
+  thumbnail: asset("/images/yash.jepg"),
+  images: [asset("/images/yash.jepg")],
+  updatedAt: "2026-06-09T10:00:00Z"
+}
 ];
 
 export default function Blogs({ windowId }) {
