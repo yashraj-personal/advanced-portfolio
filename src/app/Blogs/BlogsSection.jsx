@@ -168,8 +168,8 @@ const defaultNotes = [
   date: "6/9/26",
   pinned: true,
   folder: "notes",
-  thumbnail: asset("/images/yash.jepg"),
-  images: [asset("/images/yash.jepg")],
+  thumbnail: asset("/images/yash.jpeg"),
+  images: [asset("/images/yash.jpeg")],
   updatedAt: "2026-06-09T10:00:00Z"
 }
 ];
